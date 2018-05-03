@@ -29,6 +29,28 @@ int change_from_char_to_num() {
 
 void read_from_console(order_t *input_order) {
 	char ch;
+<<<<<<< HEAD
+	int index;                 /*循环变量*/
+	int num_of_precedure;
+	scanf("%d", &(test_order->num_of_jobs));       /*输入产品参数*/
+	scanf("%d", &(test_order->num_of_machines));  /*输入机器数目*/
+	test_order->operations = (operation_t**)malloc(sizeof(operation_t*) * test_order->num_of_jobs);  //为指针数组动态分配空间 
+	for (index = 0; index < test_order->num_of_jobs; index++) {
+		test_order->operations[index] = (operation_t*)malloc(sizeof(operation_t) * 10);  //为数组中的元素分配空间 
+		if (test_order->operations[index] == NULL) {
+			printf("分配失败\n");
+		}
+	}
+	for (index = 0; index < test_order->num_of_jobs; index++) {
+		num_of_precedure = 0;
+		scanf("%d", &((test_order->operations[index][num_of_precedure]).period));   //产品序号 
+		ch = getchar();
+		while (1) {
+			if (ch == '(') {
+				(test_order->operations[index][num_of_precedure]).period = change_from_char_to_num(getchar());
+				(test_order->operations[index][num_of_precedure]).machine = change_from_char_to_num(getchar());
+				num_of_precedure++;
+=======
 	int i;                 /*寰幆鍙橀噺*/
 	int a;
 	scanf("%d", &(input_order->num_of_jobs));       /*杈撳叆浜у搧鍙傛暟*/
@@ -48,12 +70,14 @@ void read_from_console(order_t *input_order) {
 				(input_order->operations[i][a]).machine = change_from_char_to_num(getchar());
 				a++;
 				ch = getchar();
+>>>>>>> 7c08cd0e481e4cf8eb76a994b7167dca3dc190de
 			}
 			if (ch == '\n') {
 				break;
 			}
 			ch = getchar();
 		}
+		printf("\n");
 	}
 }
 
@@ -84,13 +108,13 @@ void read_from_file(order_t *input_order, const char *path) {
 				(input_order->operations[index][num_of_precedure]).period = file_change_from_char_to_num(fp);
 				(input_order->operations[index][num_of_precedure]).machine = file_change_from_char_to_num(fp);
 				num_of_precedure++;
-				ch = fgetc(fp);
 			}
 			if (ch == '\n') {
 				break;
 			}
 			ch = fgetc(fp);
 		}
+		printf("\n");
 	}
 	fclose(fp);
 }
@@ -98,9 +122,14 @@ void read_from_file(order_t *input_order, const char *path) {
 int file_change_from_char_to_num(FILE *fp) {
 	char ch = fgetc(fp);
 	int num = 0;
-	while (ch >= '0' && ch <= '9') {
-		num = num * 10 + (ch - '0');
+	if (ch > '9' || ch < '0') {
 		ch = fgetc(fp);
+	}
+	if (ch >= '0' && ch <= '9') {
+		while (ch >= '0' && ch <= '9') {
+			num = num * 10 + (ch - '0');
+			ch = fgetc(fp);
+		}
 	}
 	return num;
 }
